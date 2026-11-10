@@ -1,15 +1,107 @@
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bé Học Toán Lớp 1 - Siêu Đáng Yêu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Comfortaa:wght@600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelPink: '#FFB7B2',
+                        pastelYellow: '#FFDAC1',
+                        pastelGreen: '#E2F0CB',
+                        pastelBlue: '#B5EAD7',
+                        pastelPurple: '#C7CEEA',
+                        brightYellow: '#FFD166',
+                        brightPink: '#FF6B6B',
+                        brightGreen: '#06D6A0',
+                        brightBlue: '#118AB2'
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        comfortaa: ['Comfortaa', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #FFF5F5 0%, #EBF8FF 50%, #F0FFF4 100%);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .btn-3d {
+            transition: all 0.1s ease;
+            box-shadow: 0px 6px 0px 0px rgba(0,0,0,0.15);
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.15);
+        }
+
+        .bubble-tail::after {
+            content: '';
+            position: absolute;
+            left: -12px;
+            bottom: 15px;
+            border-width: 8px 12px 8px 0;
+            border-style: solid;
+            border-color: transparent #ffffff transparent transparent;
+            display: block;
+            width: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Road track background animation for race game */
+        .road-track {
+            background-color: #4A5568;
+            background-image: linear-gradient(180deg, #334155 0%, #475569 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .road-line {
+            background: repeating-linear-gradient(to bottom, #FFFFFF 0px, #FFFFFF 25px, transparent 25px, transparent 50px);
+            animation: moveRoad 0.8s linear infinite;
+        }
+        @keyframes moveRoad {
+            0% { transform: translateY(-50px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col text-gray-800 overflow-x-hidden">
 
     <!-- Welcome & Name Modal -->
-    <div id="name-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div id="name-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full border-4 border-pink-300 shadow-2xl text-center flex flex-col items-center space-y-4 animate-float">
-            <div class="text-6xl animate-bounce">🐻</div>
-            <h2 class="text-2xl font-bold text-purple-700">Chào Mừng Bé Yêu!</h2>
-            <p class="text-sm text-gray-600">Nhập tên của bé để cùng gấu Barnaby học toán nhé!</p>
-            <input type="text" id="player-name-input" placeholder="Tên bé (VD: Bé Rin)..." class="w-full text-center text-xl font-bold px-4 py-3 border-3 border-purple-300 rounded-2xl focus:outline-none focus:border-pink-500 bg-purple-50 text-purple-800">
-            <button onclick="savePlayerName()" class="btn-3d w-full bg-pink-500 hover:bg-pink-600 text-white font-extrabold text-xl py-3 rounded-2xl border-2 border-pink-700 shadow-lg">
+            <div class="text-7xl animate-bounce">🐻</div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-purple-700">Chào Mừng Bé Yêu!</h2>
+            <p class="text-sm text-gray-600 font-medium">Nhập tên của bé để cùng gấu Barnaby học toán và chơi đua xe nhé!</p>
+            <input type="text" id="player-name-input" placeholder="Tên bé (VD: Bé Rin)..." class="w-full text-center text-xl font-bold px-4 py-3 border-3 border-purple-300 rounded-2xl focus:outline-none focus:border-pink-500 bg-purple-50 text-purple-800 shadow-inner">
+            <button onclick="savePlayerName()" class="btn-3d w-full bg-pink-500 hover:bg-pink-600 active:bg-pink-700 text-white font-extrabold text-xl py-3 rounded-2xl border-2 border-pink-700 shadow-lg">
                 Bắt Đầu Học Ngay 🚀
             </button>
         </div>
@@ -20,21 +112,21 @@
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <!-- App Logo / Title -->
             <button onclick="showHome()" class="flex items-center space-x-2 md:space-x-3 text-left group focus:outline-none">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-300 rounded-full flex items-center justify-center text-xl md:text-2xl shadow-inner group-hover:rotate-12 transition-transform">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-300 rounded-2xl flex items-center justify-center text-xl md:text-2xl shadow-inner group-hover:rotate-12 transition-transform border-2 border-yellow-400">
                     🏎️
                 </div>
                 <div>
-                    <h1 class="text-xl md:text-3xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+                    <h1 class="text-xl md:text-3xl font-extrabold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
                         Toán Lớp 1
                     </h1>
-                    <p id="player-greeting-header" class="text-[10px] md:text-xs text-purple-600 font-bold truncate max-w-[120px] md:max-w-none">Bé Rin</p>
+                    <p id="player-greeting-header" class="text-xs text-purple-600 font-bold truncate max-w-[120px] md:max-w-none">Bé Rin</p>
                 </div>
             </button>
 
             <!-- Level Selector & Sound Toggle & Stats -->
             <div class="flex items-center space-x-2 md:space-x-3">
                 <!-- Change Name Button -->
-                <button onclick="openNameModal()" title="Đổi tên bé" class="px-2 py-1 bg-pink-100 hover:bg-pink-200 border border-pink-300 rounded-xl text-xs font-bold text-pink-700 transition-colors flex items-center space-x-1">
+                <button onclick="openNameModal()" title="Đổi tên bé" class="px-2.5 py-1 bg-pink-100 hover:bg-pink-200 border-2 border-pink-300 rounded-xl text-xs font-bold text-pink-700 transition-colors flex items-center space-x-1">
                     <span>✏️</span>
                     <span class="hidden sm:inline">Đổi tên</span>
                 </button>
@@ -83,10 +175,136 @@
             </div>
         </div>
 
-<!-- ... existing code ... -->
-        <!-- ---------------- MODE 2: ADDITION & SUBTRACTION ---------------- -->
-        <!-- Updated setupMathMode JS logic replaces visual hint with pure numbers and progressive 2 to 5 numbers calculation -->
-<!-- ... existing code ... -->
+        <!-- MENU MODE SELECTION -->
+        <div id="menu-screen" class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
+            <!-- Mode Race Game -->
+            <button onclick="startMode('race')" class="btn-3d bg-gradient-to-br from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white rounded-3xl p-5 border-4 border-red-300 flex flex-col items-center space-y-3 text-center sm:col-span-2 lg:col-span-1 shadow-lg">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl shadow-inner">🏎️</div>
+                <div>
+                    <div class="bg-yellow-300 text-yellow-900 text-[10px] font-black uppercase px-2 py-0.5 rounded-full inline-block mb-1">TRÒ CHƠI MỚI</div>
+                    <h3 class="text-xl font-bold">Game Đua Xe</h3>
+                    <p class="text-xs text-red-100">Vượt chướng ngại vật & trả lời câu hỏi toán!</p>
+                </div>
+            </button>
+
+            <!-- Mode 1: Counting -->
+            <button onclick="startMode('count')" class="btn-3d bg-gradient-to-br from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white rounded-3xl p-5 border-4 border-green-300 flex flex-col items-center space-y-3 text-center shadow-md">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl shadow-inner">🍎</div>
+                <div>
+                    <h3 class="text-xl font-bold">Tập Đếm Đồ Vật</h3>
+                    <p class="text-xs text-green-100">Đếm xem có bao nhiêu quả táo hay con vật?</p>
+                </div>
+            </button>
+
+            <!-- Mode 2: Math (Addition & Subtraction) -->
+            <button onclick="startMode('math')" class="btn-3d bg-gradient-to-br from-blue-400 to-indigo-500 hover:from-blue-500 hover:to-indigo-600 text-white rounded-3xl p-5 border-4 border-blue-300 flex flex-col items-center space-y-3 text-center shadow-md">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl shadow-inner">➕➖</div>
+                <div>
+                    <h3 class="text-xl font-bold">Phép Cộng & Trừ</h3>
+                    <p class="text-xs text-blue-100">Tính toán phép tính 2 đến 5 số linh hoạt!</p>
+                </div>
+            </button>
+
+            <!-- Mode 3: Compare -->
+            <button onclick="startMode('compare')" class="btn-3d bg-gradient-to-br from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white rounded-3xl p-5 border-4 border-purple-300 flex flex-col items-center space-y-3 text-center shadow-md">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl shadow-inner">⚖️</div>
+                <div>
+                    <h3 class="text-xl font-bold">So Sánh Nào!</h3>
+                    <p class="text-xs text-purple-100">Chọn dấu Lớn (>), Bé (<) hay Bằng (=)?</p>
+                </div>
+            </button>
+
+            <!-- Mode 4: Matching -->
+            <button onclick="startMode('match')" class="btn-3d bg-gradient-to-br from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white rounded-3xl p-5 border-4 border-yellow-300 flex flex-col items-center space-y-3 text-center shadow-md sm:col-span-2 lg:col-span-1">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl shadow-inner">🧩</div>
+                <div>
+                    <h3 class="text-xl font-bold">Ghép Thẻ Tìm Số</h3>
+                    <p class="text-xs text-yellow-100">Nối số lượng với số đúng tương ứng!</p>
+                </div>
+            </button>
+        </div>
+
+        <!-- GAMEPLAY CONTAINER (Hidden by default) -->
+        <div id="game-screen" class="w-full hidden flex-col items-center max-w-2xl">
+            <!-- Game Top Header & Back Button -->
+            <div class="w-full flex justify-between items-center mb-4">
+                <button onclick="showHome()" class="px-4 py-2 bg-white border-2 border-gray-300 hover:bg-gray-100 rounded-2xl text-sm font-bold text-gray-700 shadow-sm flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Trở về</span>
+                </button>
+                <div class="flex items-center space-x-2">
+                    <span id="game-title-tag" class="bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                        Chế độ
+                    </span>
+                    <span id="level-badge" class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">
+                        Mức 1
+                    </span>
+                </div>
+            </div>
+
+            <!-- Question Prompt Box -->
+            <div id="question-prompt-box" class="w-full bg-white rounded-3xl p-5 md:p-6 shadow-lg border-3 border-purple-200 mb-6 flex flex-col items-center text-center">
+                <h2 id="question-prompt" class="text-xl md:text-2xl font-bold text-gray-800 mb-4">
+                    Câu hỏi xuất hiện ở đây...
+                </h2>
+
+                <!-- Dynamic Content Display Area -->
+                <div id="display-area" class="w-full flex justify-center items-center min-h-[160px] my-2">
+                    <!-- Interactive Elements appended dynamically -->
+                </div>
+            </div>
+
+            <!-- Interactive Options / Answer Buttons Area -->
+            <div id="options-area" class="w-full grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                <!-- Answer buttons dynamically rendered -->
+            </div>
+        </div>
+
+        <!-- RACING GAME CONTAINER (Hidden by default) -->
+        <div id="race-screen" class="w-full hidden flex-col items-center max-w-xl">
+            <div class="w-full flex justify-between items-center mb-3">
+                <button onclick="showHome()" class="px-4 py-2 bg-white border-2 border-gray-300 hover:bg-gray-100 rounded-2xl text-sm font-bold text-gray-700 shadow-sm flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Thoát Đua Xe</span>
+                </button>
+                <div class="flex items-center space-x-2 bg-red-100 border border-red-300 px-3 py-1 rounded-full">
+                    <span class="text-sm font-bold text-red-600">Điểm xe: <span id="race-score">0</span> 🏁</span>
+                </div>
+            </div>
+
+            <!-- 2D Race Track Canvas Box -->
+            <div class="w-full h-80 road-track rounded-3xl border-4 border-slate-700 shadow-2xl relative flex justify-center items-center overflow-hidden">
+                <!-- Road Lines -->
+                <div class="w-2 h-full road-line absolute"></div>
+
+                <!-- Race Car -->
+                <div id="race-car" class="absolute bottom-6 text-6xl transition-transform duration-300 transform">
+                    🏎️
+                </div>
+
+                <!-- Obstacle -->
+                <div id="race-obstacle" class="absolute top-10 text-5xl transition-all duration-300">
+                    🚧
+                </div>
+
+                <!-- Race Overlay Quiz Question (Triggered when encountering obstacle) -->
+                <div id="race-quiz-overlay" class="absolute inset-0 bg-black/75 backdrop-blur-sm p-4 hidden flex-col justify-center items-center text-center text-white z-20">
+                    <div class="bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full mb-2 animate-bounce">
+                        ⚠️ GẶP CHƯỚNG NGẠI VẬT!
+                    </div>
+                    <p id="race-question-text" class="text-2xl font-bold mb-4 text-yellow-300">3 + 2 = ?</p>
+                    <div id="race-options" class="grid grid-cols-2 gap-3 w-full max-w-xs">
+                        <!-- Options injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-3 font-semibold text-center">
+                Trả lời đúng để xe tăng tốc vượt qua chướng ngại vật! 🚀
+            </p>
+        </div>
+
+    </main>
 
     <script>
         /* ---------------- Global State & Data ---------------- */
@@ -122,29 +340,67 @@
         }
 
         function renderBadges() {
-            // Placeholder function for rendering badges if badge container exists
-            const badgeContainer = document.getElementById('badge-container');
-            if (badgeContainer) {
-                badgeContainer.innerHTML = '';
-                const badges = [
-                    { icon: '⭐', minStars: 5, label: 'Ngôi Sao Tập Sự' },
-                    { icon: '🚀', minStars: 20, label: 'Tay Đua Siêu Cấp' },
-                    { icon: '👑', minStars: 50, label: 'Vua Toán Học' }
-                ];
-                badges.forEach(b => {
-                    const unlocked = totalStars >= b.minStars;
-                    const badgeEl = document.createElement('div');
-                    badgeEl.className = `flex items-center space-x-1 px-3 py-1 rounded-full border text-xs font-bold ${unlocked ? 'bg-yellow-100 border-yellow-400 text-yellow-800' : 'bg-gray-100 border-gray-300 text-gray-400 opacity-60'}`;
-                    badgeEl.innerHTML = `<span>${b.icon}</span><span>${b.label}</span>`;
-                    badgeContainer.appendChild(badgeEl);
-                });
+            // Function for badges initialization
+        }
+
+        /* ---------------- Sound Synthesizer (Web Audio API) ---------------- */
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+
+                if (type === 'correct') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.frequency.value = freq;
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(ctx.currentTime + idx * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.08 + 0.2);
+                        osc.stop(ctx.currentTime + idx * 0.08 + 0.2);
+                    });
+                } else if (type === 'wrong') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.value = 180;
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.3);
+                    osc.stop(ctx.currentTime + 0.3);
+                } else if (type === 'click') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.frequency.value = 400;
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.08);
+                    osc.stop(ctx.currentTime + 0.08);
+                }
+            } catch (e) { console.log(e); }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('sound-btn');
+            if (soundEnabled) {
+                btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                btn.className = "w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-blue-100 border-2 border-blue-300 flex items-center justify-center text-blue-600 text-base md:text-lg hover:bg-blue-200 transition-colors";
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                btn.className = "w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-gray-400 text-base md:text-lg hover:bg-gray-200 transition-colors";
             }
         }
 
         /* ---------------- Core App Initialization ---------------- */
         window.onload = function() {
             updateStarDisplay();
-            renderBadges();
             setLimit(10);
             
             if (!playerName) {
@@ -184,9 +440,65 @@
             return list[Math.floor(Math.random() * list.length)];
         }
 
+        function speakMascot(text) {
+            document.getElementById('mascot-speech').innerText = text;
+        }
+
+        function playMascotSound() {
+            playSound('click');
+            speakMascot(getRandomMascotText('mascotClick'));
+        }
+
+        function setLimit(limit) {
+            playSound('click');
+            currentLimit = limit;
+            [5, 10, 20].forEach(l => {
+                const btn = document.getElementById(`limit-btn-${l}`);
+                if (l === limit) {
+                    btn.className = "px-2 py-0.5 md:px-2.5 md:py-1 rounded-xl bg-purple-500 text-white transition-colors shadow-sm";
+                } else {
+                    btn.className = "px-2 py-0.5 md:px-2.5 md:py-1 rounded-xl hover:bg-purple-200 text-purple-700 transition-colors";
+                }
+            });
+            if (currentMode) {
+                loadQuestion();
+            }
+        }
+
+        function showHome() {
+            playSound('click');
+            currentMode = null;
+            document.getElementById('menu-screen').classList.remove('hidden');
+            document.getElementById('menu-screen').classList.add('grid');
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('flex');
+            document.getElementById('race-screen').classList.add('hidden');
+            document.getElementById('race-screen').classList.remove('flex');
+            speakMascot(getRandomMascotText('welcome'));
+        }
+
+        function startMode(mode) {
+            playSound('click');
+            currentMode = mode;
+            streak = 0;
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('menu-screen').classList.remove('grid');
+
+            if (mode === 'race') {
+                document.getElementById('game-screen').classList.add('hidden');
+                document.getElementById('race-screen').classList.remove('hidden');
+                document.getElementById('race-screen').classList.add('flex');
+                initRaceGame();
+            } else {
+                document.getElementById('race-screen').classList.add('hidden');
+                document.getElementById('game-screen').classList.remove('hidden');
+                document.getElementById('game-screen').classList.add('flex');
+                loadQuestion();
+            }
+        }
+
         /* ---------------- PROGRESSIVE DIFFICULTY HELPER (2 TO 5 NUMBERS) ---------------- */
         function generateMathProblem() {
-            // Determine number of elements in calculation based on streak
             let numTerms = 2;
             let levelLabel = "Mức 1 (2 số)";
 
@@ -215,7 +527,7 @@
                     if (maxAdd <= 1) {
                         isPlus = false;
                     } else {
-                        nextTerm = Math.floor(Math.random() * Math.min(maxAdd, 6)) + 1;
+                        nextTerm = Math.floor(Math.random() * Math.min(maxAdd, 5)) + 1;
                         currentVal += nextTerm;
                         ops.push('+');
                     }
@@ -235,7 +547,6 @@
                 terms.push(nextTerm);
             }
 
-            // Build expression text string
             let expr = `${terms[0]}`;
             for (let i = 0; i < ops.length; i++) {
                 expr += ` ${ops[i]} ${terms[i+1]}`;
@@ -244,7 +555,52 @@
             return { expressionText: expr, answer: currentVal, levelLabel: levelLabel, numTerms: numTerms };
         }
 
-        /* ---------------- MODE 2: ADDITION & SUBTRACTION (PURE NUMBERS, NO VISUALS) ---------------- */
+        /* ---------------- QUESTION LOAD ROUTER ---------------- */
+        function loadQuestion() {
+            if (currentMode === 'count') setupCountMode();
+            else if (currentMode === 'math') setupMathMode();
+            else if (currentMode === 'compare') setupCompareMode();
+            else if (currentMode === 'match') setupMatchMode();
+        }
+
+        /* ---------------- MODE 1: COUNTING ---------------- */
+        function setupCountMode() {
+            const display = document.getElementById('display-area');
+            const options = document.getElementById('options-area');
+            const titleTag = document.getElementById('game-title-tag');
+            const prompt = document.getElementById('question-prompt');
+            display.innerHTML = ''; options.innerHTML = '';
+
+            titleTag.innerText = "Chế độ 1: Tập Đếm";
+            titleTag.className = "bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
+            prompt.innerText = "Bé hãy đếm xem có tất cả bao nhiêu đồ vật nhé!";
+
+            currentAnswer = Math.floor(Math.random() * currentLimit) + 1;
+            const icons = ['🍎', '🐶', '🐱', '⭐', '🎈', '🚗', '🍓', '🐝'];
+            const chosenIcon = icons[Math.floor(Math.random() * icons.length)];
+
+            const grid = document.createElement('div');
+            grid.className = "flex flex-wrap justify-center gap-3 p-4 bg-green-50 rounded-3xl border-2 border-green-200 w-full max-w-md";
+            for (let i = 0; i < currentAnswer; i++) {
+                const item = document.createElement('span');
+                item.className = "text-4xl md:text-5xl animate-bounce";
+                item.style.animationDelay = `${i * 0.05}s`;
+                item.innerText = chosenIcon;
+                grid.appendChild(item);
+            }
+            display.appendChild(grid);
+
+            const choices = generateChoices(currentAnswer, currentLimit);
+            choices.forEach(val => {
+                const btn = document.createElement('button');
+                btn.className = "btn-3d bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-extrabold text-3xl md:text-4xl py-4 rounded-2xl border-2 border-green-700 shadow-md";
+                btn.innerText = val;
+                btn.onclick = () => checkAnswer(val);
+                options.appendChild(btn);
+            });
+        }
+
+        /* ---------------- MODE 2: MATH (PURE NUMBERS, NO VISUALS) ---------------- */
         function setupMathMode() {
             const display = document.getElementById('display-area');
             const options = document.getElementById('options-area');
@@ -253,18 +609,15 @@
             display.innerHTML = ''; options.innerHTML = '';
 
             titleTag.innerText = "Chế độ 2: Phép Cộng & Trừ";
-            titleTag.className = "bg-blue-200 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
+            titleTag.className = "bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
             prompt.innerText = "Bé hãy tính kết quả phép tính bên dưới nhé!";
 
-            // Progressive math problem (2 to 5 numbers)
             const problem = generateMathProblem();
             currentAnswer = problem.answer;
 
-            // Update level tag on UI
             const levelBadge = document.getElementById('level-badge');
             if (levelBadge) levelBadge.innerText = problem.levelLabel;
 
-            // Display minimal pure number equation block (NO IMAGE HINTS)
             const container = document.createElement('div');
             container.className = "flex flex-col items-center justify-center p-6 md:p-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl border-3 border-blue-300 w-full max-w-lg shadow-md";
 
@@ -280,14 +633,181 @@
             container.appendChild(eqText);
             display.appendChild(container);
 
-            // Large Touch Option Buttons optimized for Mobile
             const choices = generateChoices(currentAnswer, currentLimit);
             choices.forEach(val => {
                 const btn = document.createElement('button');
-                btn.className = "btn-3d bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-extrabold text-3xl md:text-4xl py-4 md:py-5 rounded-2xl border-2 border-blue-700 shadow-md";
+                btn.className = "btn-3d bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-extrabold text-3xl md:text-4xl py-4 rounded-2xl border-2 border-blue-700 shadow-md";
                 btn.innerText = val;
                 btn.onclick = () => checkAnswer(val);
                 options.appendChild(btn);
             });
         }
-<!-- ... existing code ... -->
+
+        /* ---------------- MODE 3: COMPARE ---------------- */
+        function setupCompareMode() {
+            const display = document.getElementById('display-area');
+            const options = document.getElementById('options-area');
+            const titleTag = document.getElementById('game-title-tag');
+            const prompt = document.getElementById('question-prompt');
+            display.innerHTML = ''; options.innerHTML = '';
+
+            titleTag.innerText = "Chế độ 3: So Sánh";
+            titleTag.className = "bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
+            prompt.innerText = "Điền dấu thích hợp vào ô trống (> , < , =)";
+
+            const num1 = Math.floor(Math.random() * currentLimit) + 1;
+            const num2 = Math.floor(Math.random() * currentLimit) + 1;
+
+            if (num1 > num2) currentAnswer = '>';
+            else if (num1 < num2) currentAnswer = '<';
+            else currentAnswer = '=';
+
+            const box = document.createElement('div');
+            box.className = "flex items-center space-x-4 md:space-x-8 bg-purple-50 p-6 rounded-3xl border-3 border-purple-200 shadow-inner";
+            box.innerHTML = `
+                <span class="text-4xl md:text-6xl font-extrabold text-purple-700">${num1}</span>
+                <div class="w-14 h-14 md:w-20 md:h-20 bg-white rounded-2xl border-4 border-dashed border-purple-400 flex items-center justify-center text-3xl font-bold text-purple-500">?</div>
+                <span class="text-4xl md:text-6xl font-extrabold text-purple-700">${num2}</span>
+            `;
+            display.appendChild(box);
+
+            ['>', '<', '='].forEach(symbol => {
+                const btn = document.createElement('button');
+                btn.className = "btn-3d bg-purple-500 hover:bg-purple-600 active:bg-purple-700 text-white font-extrabold text-4xl py-4 rounded-2xl border-2 border-purple-700 shadow-md col-span-2 sm:col-span-1";
+                btn.innerText = symbol;
+                btn.onclick = () => checkAnswer(symbol);
+                options.appendChild(btn);
+            });
+        }
+
+        /* ---------------- MODE 4: MATCHING ---------------- */
+        function setupMatchMode() {
+            const display = document.getElementById('display-area');
+            const options = document.getElementById('options-area');
+            const titleTag = document.getElementById('game-title-tag');
+            const prompt = document.getElementById('question-prompt');
+            display.innerHTML = ''; options.innerHTML = '';
+
+            titleTag.innerText = "Chế độ 4: Ghép Thẻ";
+            titleTag.className = "bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
+            prompt.innerText = "Chọn con số tương ứng với số lượng hình bên dưới!";
+
+            currentAnswer = Math.floor(Math.random() * currentLimit) + 1;
+            const icons = ['🐱', '🐶', '🐰', '🐼'];
+            const icon = icons[Math.floor(Math.random() * icons.length)];
+
+            const container = document.createElement('div');
+            container.className = "flex flex-wrap justify-center gap-2 p-4 bg-yellow-50 rounded-3xl border-2 border-yellow-300 w-full max-w-md";
+            for (let i = 0; i < currentAnswer; i++) {
+                const el = document.createElement('span');
+                el.className = "text-3xl md:text-4xl";
+                el.innerText = icon;
+                container.appendChild(el);
+            }
+            display.appendChild(container);
+
+            const choices = generateChoices(currentAnswer, currentLimit);
+            choices.forEach(val => {
+                const btn = document.createElement('button');
+                btn.className = "btn-3d bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-extrabold text-3xl md:text-4xl py-4 rounded-2xl border-2 border-amber-700 shadow-md";
+                btn.innerText = val;
+                btn.onclick = () => checkAnswer(val);
+                options.appendChild(btn);
+            });
+        }
+
+        /* ---------------- CHECK ANSWER COMMON FUNCTION ---------------- */
+        function checkAnswer(selected) {
+            if (selected == currentAnswer) {
+                playSound('correct');
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+                totalStars++;
+                streak++;
+                localStorage.setItem('math_stars', totalStars);
+                updateStarDisplay();
+                speakMascot(getRandomMascotText('correct'));
+                setTimeout(loadQuestion, 1200);
+            } else {
+                playSound('wrong');
+                streak = 0;
+                speakMascot(getRandomMascotText('wrong'));
+            }
+        }
+
+        /* ---------------- CHOICE GENERATOR ---------------- */
+        function generateChoices(correct, limit) {
+            const set = new Set([correct]);
+            while (set.size < 4) {
+                let r = Math.floor(Math.random() * limit) + 1;
+                set.add(r);
+            }
+            return Array.from(set).sort(() => Math.random() - 0.5);
+        }
+
+        /* ---------------- MODE 5: RACING GAME ---------------- */
+        function initRaceGame() {
+            raceScore = 0;
+            document.getElementById('race-score').innerText = raceScore;
+            triggerRaceObstacle();
+        }
+
+        function triggerRaceObstacle() {
+            document.getElementById('race-quiz-overlay').classList.add('hidden');
+            document.getElementById('race-quiz-overlay').classList.remove('flex');
+
+            const obsElem = document.getElementById('race-obstacle');
+            obsElem.innerText = obstaclesIcons[Math.floor(Math.random() * obstaclesIcons.length)];
+            obsElem.style.top = '10%';
+
+            setTimeout(() => {
+                obsElem.style.top = '55%';
+                setTimeout(showRaceQuestion, 400);
+            }, 300);
+        }
+
+        function showRaceQuestion() {
+            const problem = generateMathProblem();
+            currentAnswer = problem.answer;
+
+            document.getElementById('race-question-text').innerText = `${problem.expressionText} = ?`;
+            const optionsBox = document.getElementById('race-options');
+            optionsBox.innerHTML = '';
+
+            const choices = generateChoices(currentAnswer, currentLimit);
+            choices.forEach(val => {
+                const btn = document.createElement('button');
+                btn.className = "btn-3d bg-yellow-400 hover:bg-yellow-500 text-yellow-950 font-extrabold text-2xl py-3 rounded-xl border-2 border-yellow-600 shadow-md";
+                btn.innerText = val;
+                btn.onclick = () => checkRaceAnswer(val);
+                optionsBox.appendChild(btn);
+            });
+
+            document.getElementById('race-quiz-overlay').classList.remove('hidden');
+            document.getElementById('race-quiz-overlay').classList.add('flex');
+        }
+
+        function checkRaceAnswer(selected) {
+            if (selected == currentAnswer) {
+                playSound('correct');
+                confetti({ particleCount: 40, spread: 50, origin: { y: 0.6 } });
+                raceScore += 10;
+                totalStars++;
+                localStorage.setItem('math_stars', totalStars);
+                updateStarDisplay();
+                document.getElementById('race-score').innerText = raceScore;
+
+                const car = document.getElementById('race-car');
+                car.style.transform = 'translateY(-20px) scale(1.1)';
+                setTimeout(() => { car.style.transform = 'translateY(0px) scale(1)'; }, 300);
+
+                speakMascot(`Xe vọt qua rồi! Xuất sắc lắm ${playerName || "bé"}! 🏎️💨`);
+                setTimeout(triggerRaceObstacle, 1000);
+            } else {
+                playSound('wrong');
+                speakMascot(`Xe bị khựng lại rồi! Cố gắng tính kỹ lại câu sau nhé ${playerName || "bé"}! 🚧`);
+                setTimeout(triggerRaceObstacle, 1200);
+            }
+        }
+    </script>
+</body>
+</html>

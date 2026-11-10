@@ -757,12 +757,14 @@
 
             const obsElem = document.getElementById('race-obstacle');
             obsElem.innerText = obstaclesIcons[Math.floor(Math.random() * obstaclesIcons.length)];
-            obsElem.style.top = '10%';
+            // Giấu chướng ngại vật ở phía trên đường đua
+            obsElem.style.top = '-20%';
 
+            // Cho xe chạy 5 giây trước khi chướng ngại vật từ từ hạ xuống
             setTimeout(() => {
                 obsElem.style.top = '55%';
-                setTimeout(showRaceQuestion, 400);
-            }, 300);
+                setTimeout(showRaceQuestion, 600);
+            }, 5000);
         }
 
         function showRaceQuestion() {
@@ -800,12 +802,12 @@
                 car.style.transform = 'translateY(-20px) scale(1.1)';
                 setTimeout(() => { car.style.transform = 'translateY(0px) scale(1)'; }, 300);
 
-                speakMascot(`Xe vọt qua rồi! Xuất sắc lắm ${playerName || "bé"}! 🏎️💨`);
-                setTimeout(triggerRaceObstacle, 1000);
+                speakMascot(`Vút! Xe vượt qua rồi! Bé Rin đua tiếp 5 giây nhé! 🏎️💨`);
+                setTimeout(triggerRaceObstacle, 500);
             } else {
                 playSound('wrong');
-                speakMascot(`Xe bị khựng lại rồi! Cố gắng tính kỹ lại câu sau nhé ${playerName || "bé"}! 🚧`);
-                setTimeout(triggerRaceObstacle, 1200);
+                speakMascot(`Xe bị khựng lại rồi! Thử lại câu sau nhé bé Rin! 🚧`);
+                setTimeout(triggerRaceObstacle, 1000);
             }
         }
     </script>

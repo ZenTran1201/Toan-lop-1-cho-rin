@@ -1,148 +1,59 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bé Học Toán Lớp 1 - Siêu Đáng Yêu</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Comfortaa:wght@600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        pastelPink: '#FFB7B2',
-                        pastelYellow: '#FFDAC1',
-                        pastelGreen: '#E2F0CB',
-                        pastelBlue: '#B5EAD7',
-                        pastelPurple: '#C7CEEA',
-                        brightYellow: '#FFD166',
-                        brightPink: '#FF6B6B',
-                        brightGreen: '#06D6A0',
-                        brightBlue: '#118AB2'
-                    },
-                    fontFamily: {
-                        fredoka: ['Fredoka', 'sans-serif'],
-                        comfortaa: ['Comfortaa', 'cursive']
-                    },
-                    animation: {
-                        bounceSlow: 'bounce 2s infinite',
-                        wiggle: 'wiggle 0.5s ease-in-out infinite',
-                        pulseFast: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        float: 'float 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        wiggle: {
-                            '0%, 100%': { transform: 'rotate(-3deg)' },
-                            '50%': { transform: 'rotate(3deg)' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        body {
-            font-family: 'Fredoka', cursive, sans-serif;
-            background: linear-gradient(135deg, #FFF5F5 0%, #EBF8FF 50%, #F0FFF4 100%);
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-        }
-
-        /* Custom soft shadows and 3D button effects */
-        .btn-3d {
-            transition: all 0.1s ease;
-            box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.15);
-        }
-        .btn-3d:active {
-            transform: translateY(4px);
-            box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-pop {
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .card-pop:hover {
-            transform: scale(1.03) translateY(-5px);
-        }
-
-        /* Speech Bubble Tail */
-        .bubble-tail::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 30px;
-            border-width: 12px 12px 0 0;
-            border-style: solid;
-            border-color: #ffffff transparent transparent transparent;
-        }
-
-        /* Matching Line Game Styles */
-        .match-card {
-            border: 4px solid transparent;
-            transition: all 0.2s;
-        }
-        .match-card.selected {
-            border-color: #FF6B6B;
-            background-color: #FFF0F0;
-            transform: scale(1.05);
-        }
-        .match-card.matched {
-            border-color: #06D6A0;
-            background-color: #E6FFFA;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-    </style>
+<!-- ... existing code ... -->
 </head>
 <body class="min-h-screen flex flex-col text-gray-800 overflow-x-hidden">
 
+    <!-- Welcome & Name Modal -->
+    <div id="name-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full border-4 border-pink-300 shadow-2xl text-center flex flex-col items-center space-y-4 animate-float">
+            <div class="text-6xl animate-bounce">🐻</div>
+            <h2 class="text-2xl font-bold text-purple-700">Chào Mừng Bé Yêu!</h2>
+            <p class="text-sm text-gray-600">Nhập tên của bé để cùng gấu Barnaby học toán nhé!</p>
+            <input type="text" id="player-name-input" placeholder="Tên bé (VD: Bé Rin)..." class="w-full text-center text-xl font-bold px-4 py-3 border-3 border-purple-300 rounded-2xl focus:outline-none focus:border-pink-500 bg-purple-50 text-purple-800">
+            <button onclick="savePlayerName()" class="btn-3d w-full bg-pink-500 hover:bg-pink-600 text-white font-extrabold text-xl py-3 rounded-2xl border-2 border-pink-700 shadow-lg">
+                Bắt Đầu Học Ngay 🚀
+            </button>
+        </div>
+    </div>
+
     <!-- Top Header Bar -->
-    <header class="w-full bg-white/80 backdrop-blur-md border-b-4 border-yellow-200 sticky top-0 z-40 px-4 py-3 shadow-sm">
+    <header class="w-full bg-white/90 backdrop-blur-md border-b-4 border-yellow-200 sticky top-0 z-40 px-3 py-2 md:px-4 md:py-3 shadow-sm">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <!-- App Logo / Title -->
-            <button onclick="showHome()" class="flex items-center space-x-3 text-left group focus:outline-none">
-                <div class="w-12 h-12 bg-yellow-300 rounded-full flex items-center justify-center text-2xl shadow-inner group-hover:rotate-12 transition-transform">
-                    🧮
+            <button onclick="showHome()" class="flex items-center space-x-2 md:space-x-3 text-left group focus:outline-none">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-300 rounded-full flex items-center justify-center text-xl md:text-2xl shadow-inner group-hover:rotate-12 transition-transform">
+                    🏎️
                 </div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+                    <h1 class="text-xl md:text-3xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
                         Toán Lớp 1
                     </h1>
-                    <p class="text-xs text-gray-500 font-medium">Bé học vui - Thông minh giỏi giang</p>
+                    <p id="player-greeting-header" class="text-[10px] md:text-xs text-purple-600 font-bold truncate max-w-[120px] md:max-w-none">Bé Rin</p>
                 </div>
             </button>
 
             <!-- Level Selector & Sound Toggle & Stats -->
-            <div class="flex items-center space-x-3 md:space-x-4">
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <!-- Change Name Button -->
+                <button onclick="openNameModal()" title="Đổi tên bé" class="px-2 py-1 bg-pink-100 hover:bg-pink-200 border border-pink-300 rounded-xl text-xs font-bold text-pink-700 transition-colors flex items-center space-x-1">
+                    <span>✏️</span>
+                    <span class="hidden sm:inline">Đổi tên</span>
+                </button>
+
                 <!-- Limit Range Selector -->
-                <div class="bg-purple-100 rounded-2xl p-1 flex border-2 border-purple-200 text-xs md:text-sm font-bold">
-                    <button onclick="setLimit(5)" id="limit-btn-5" class="px-2.5 py-1 rounded-xl transition-colors"><=5</button>
-                    <button onclick="setLimit(10)" id="limit-btn-10" class="px-2.5 py-1 rounded-xl bg-purple-500 text-white transition-colors"><=10</button>
-                    <button onclick="setLimit(20)" id="limit-btn-20" class="px-2.5 py-1 rounded-xl transition-colors"><=20</button>
+                <div class="bg-purple-100 rounded-2xl p-0.5 md:p-1 flex border-2 border-purple-200 text-xs font-bold">
+                    <button onclick="setLimit(5)" id="limit-btn-5" class="px-2 py-0.5 md:px-2.5 md:py-1 rounded-xl transition-colors"><=5</button>
+                    <button onclick="setLimit(10)" id="limit-btn-10" class="px-2 py-0.5 md:px-2.5 md:py-1 rounded-xl bg-purple-500 text-white transition-colors"><=10</button>
+                    <button onclick="setLimit(20)" id="limit-btn-20" class="px-2 py-0.5 md:px-2.5 md:py-1 rounded-xl transition-colors"><=20</button>
                 </div>
 
                 <!-- Stars Counter -->
-                <div class="flex items-center bg-yellow-100 border-2 border-yellow-300 px-3 py-1.5 rounded-2xl space-x-1.5 shadow-sm">
-                    <span class="text-xl animate-bounce">⭐</span>
-                    <span id="star-count" class="text-xl font-bold text-yellow-600">0</span>
+                <div class="flex items-center bg-yellow-100 border-2 border-yellow-300 px-2.5 py-1 md:px-3 md:py-1.5 rounded-2xl space-x-1 shadow-sm">
+                    <span class="text-lg md:text-xl animate-bounce">⭐</span>
+                    <span id="star-count" class="text-lg md:text-xl font-bold text-yellow-600">0</span>
                 </div>
 
                 <!-- Sound Toggle -->
-                <button id="sound-btn" onclick="toggleSound()" class="w-10 h-10 rounded-2xl bg-blue-100 border-2 border-blue-300 flex items-center justify-center text-blue-600 text-lg hover:bg-blue-200 transition-colors">
+                <button id="sound-btn" onclick="toggleSound()" class="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-blue-100 border-2 border-blue-300 flex items-center justify-center text-blue-600 text-base md:text-lg hover:bg-blue-200 transition-colors">
                     <i class="fa-solid fa-volume-high"></i>
                 </button>
             </div>
@@ -150,264 +61,83 @@
     </header>
 
     <!-- Main Container -->
-    <main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6 flex flex-col items-center">
+    <main class="flex-grow max-w-5xl w-full mx-auto p-3 md:p-6 flex flex-col items-center">
 
-        <!-- Mascot & Speech Bubble Banner (Always visible or in modes) -->
-        <div id="mascot-container" class="w-full mb-6 flex items-end justify-center md:justify-start space-x-4 max-w-2xl">
+        <!-- Mascot & Speech Bubble Banner -->
+        <div id="mascot-container" class="w-full mb-4 md:mb-6 flex items-end justify-center md:justify-start space-x-3 md:space-x-4 max-w-2xl">
             <!-- Bear Mascot -->
-            <div class="relative group cursor-pointer" onclick="playMascotSound()">
-                <div id="mascot-avatar" class="text-6xl md:text-7xl animate-float transition-transform transform hover:scale-110">
+            <div class="relative group cursor-pointer shrink-0" onclick="playMascotSound()">
+                <div id="mascot-avatar" class="text-5xl md:text-7xl animate-float transition-transform transform hover:scale-110">
                     🐻
                 </div>
-                <div class="absolute -bottom-1 -right-1 bg-yellow-400 text-xs px-1.5 py-0.5 rounded-full font-bold shadow text-white">
+                <div class="absolute -bottom-1 -right-1 bg-yellow-400 text-[10px] md:text-xs px-1.5 py-0.5 rounded-full font-bold shadow text-white">
                     Barnaby
                 </div>
             </div>
 
             <!-- Speech Bubble -->
-            <div class="bg-white rounded-3xl p-4 shadow-md border-3 border-pink-200 relative flex-1 bubble-tail max-w-md">
-                <p id="mascot-speech" class="text-base md:text-lg font-semibold text-gray-700">
-                    Chào bé yêu! Cùng gấu Barnaby học toán thật là vui nào! Chào mừng bé! 🎈
+            <div class="bg-white rounded-3xl p-3 md:p-4 shadow-md border-3 border-pink-200 relative flex-1 bubble-tail max-w-md">
+                <p id="mascot-speech" class="text-sm md:text-lg font-semibold text-gray-700 leading-snug">
+                    Chào bé! Cùng gấu Barnaby học toán và chơi đua xe thật vui nhé! 🏎️💨
                 </p>
             </div>
         </div>
 
-        <!-- ---------------- HOME DASHBOARD MODE ---------------- -->
-        <section id="mode-home" class="w-full flex flex-col items-center space-y-6">
-            <div class="text-center space-y-2">
-                <h2 class="text-2xl md:text-4xl font-bold text-purple-700">Chọn Bài Học Bé Thích Nhé!</h2>
-                <p class="text-gray-600">Mỗi câu trả lời đúng sẽ tặng bé 1 ngôi sao lấp lánh đó ⭐</p>
-            </div>
+<!-- ... existing code ... -->
+        <!-- ---------------- MODE 2: ADDITION & SUBTRACTION ---------------- -->
+        <!-- Updated setupMathMode JS logic replaces visual hint with pure numbers and progressive 2 to 5 numbers calculation -->
+<!-- ... existing code ... -->
 
-            <!-- Game Mode Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-3xl">
-                <!-- Mode 1: Count Objects -->
-                <div onclick="startMode('count')" class="card-pop bg-gradient-to-br from-pink-100 to-pink-200 border-4 border-pink-300 rounded-3xl p-6 cursor-pointer flex items-center space-x-5 shadow-lg group">
-                    <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform">
-                        🍎
-                    </div>
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-bold text-pink-700">1. Tập Đếm Số</h3>
-                        <p class="text-sm text-pink-600 mt-1">Đếm hình dễ thương & chọn số đúng</p>
-                        <span class="inline-block mt-3 bg-pink-500 text-white text-xs px-3 py-1 rounded-full font-bold">Chơi ngay ➔</span>
-                    </div>
-                </div>
-
-                <!-- Mode 2: Addition & Subtraction -->
-                <div onclick="startMode('math')" class="card-pop bg-gradient-to-br from-blue-100 to-blue-200 border-4 border-blue-300 rounded-3xl p-6 cursor-pointer flex items-center space-x-5 shadow-lg group">
-                    <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform">
-                        ➕
-                    </div>
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-bold text-blue-700">2. Cộng & Trừ</h3>
-                        <p class="text-sm text-blue-600 mt-1">Phép tính kèm minh họa trái cây trực quan</p>
-                        <span class="inline-block mt-3 bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-bold">Chơi ngay ➔</span>
-                    </div>
-                </div>
-
-                <!-- Mode 3: Greater / Less / Equal -->
-                <div onclick="startMode('compare')" class="card-pop bg-gradient-to-br from-yellow-100 to-yellow-200 border-4 border-yellow-300 rounded-3xl p-6 cursor-pointer flex items-center space-x-5 shadow-lg group">
-                    <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform">
-                        ⚖️
-                    </div>
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-bold text-yellow-800">3. So Sánh Số</h3>
-                        <p class="text-sm text-yellow-700 mt-1">Chọn dấu Lớn (>), Bé (<) hay Bằng (=)</p>
-                        <span class="inline-block mt-3 bg-yellow-500 text-white text-xs px-3 py-1 rounded-full font-bold">Chơi ngay ➔</span>
-                    </div>
-                </div>
-
-                <!-- Mode 4: Matching Pairs -->
-                <div onclick="startMode('match')" class="card-pop bg-gradient-to-br from-green-100 to-green-200 border-4 border-green-300 rounded-3xl p-6 cursor-pointer flex items-center space-x-5 shadow-lg group">
-                    <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-4xl shadow-inner group-hover:scale-110 transition-transform">
-                        🧩
-                    </div>
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-bold text-green-800">4. Tìm Cặp Đôi</h3>
-                        <p class="text-sm text-green-700 mt-1">Nối số tương ứng với số lượng hình</p>
-                        <span class="inline-block mt-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-bold">Chơi ngay ➔</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Badges Showroom -->
-            <div class="w-full max-w-3xl bg-white rounded-3xl p-5 border-3 border-purple-200 shadow-md mt-4">
-                <h3 class="text-lg font-bold text-purple-700 mb-3 flex items-center">
-                    <span class="mr-2">🏆</span> Bộ Sưu Tập Huy Hiệu Của Bé
-                </h3>
-                <div id="badges-container" class="flex flex-wrap gap-4 justify-center md:justify-start">
-                    <!-- Badges populated by JS -->
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ---------------- GAME PLAY AREA (SHARED WRAPPER) ---------------- -->
-        <section id="game-container" class="w-full max-w-3xl hidden flex-col items-center">
-            
-            <!-- Top Controls (Back & Progress) -->
-            <div class="w-full flex items-center justify-between mb-4">
-                <button onclick="showHome()" class="btn-3d bg-white border-2 border-gray-300 hover:bg-gray-50 text-gray-700 font-bold px-4 py-2 rounded-2xl flex items-center space-x-2">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>Trang Chủ</span>
-                </button>
-                <div class="flex items-center space-x-2">
-                    <span id="streak-badge" class="bg-orange-100 text-orange-600 border border-orange-300 font-bold text-xs md:text-sm px-3 py-1 rounded-full">
-                        🔥 Chuỗi đúng: 0
-                    </span>
-                </div>
-            </div>
-
-            <!-- Question Card Box -->
-            <div class="w-full bg-white rounded-3xl p-6 md:p-8 border-4 border-yellow-300 shadow-xl flex flex-col items-center relative min-h-[380px] justify-between">
-                
-                <!-- Game Mode Header / Question Hint -->
-                <div class="text-center w-full">
-                    <span id="game-title-tag" class="bg-yellow-200 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Tập Đếm</span>
-                    <h2 id="question-prompt" class="text-2xl md:text-3xl font-bold text-gray-800 mt-2">
-                        Có bao nhiêu quả táo ở đây?
-                    </h2>
-                </div>
-
-                <!-- Dynamic Content Display Area -->
-                <div id="display-area" class="w-full my-6 flex flex-col items-center justify-center min-h-[160px]">
-                    <!-- Rendered by JavaScript -->
-                </div>
-
-                <!-- Options / Answer Buttons Area -->
-                <div id="options-area" class="w-full grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
-                    <!-- Buttons inserted dynamically -->
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full text-center py-4 text-xs text-gray-500">
-        Bé Học Toán Lớp 1 ❤️ Thiết kế cho trẻ nhỏ năng động & sáng tạo!
-    </footer>
-
-    <!-- JavaScript Logic -->
     <script>
         /* ---------------- Global State & Data ---------------- */
         let currentLimit = 10;
         let totalStars = parseInt(localStorage.getItem('math_stars') || '0');
         let streak = 0;
-        let currentMode = null; // 'count', 'math', 'compare', 'match'
+        let currentMode = null; // 'count', 'math', 'compare', 'match', 'race'
         let soundEnabled = true;
         let currentAnswer = null;
+        let playerName = localStorage.getItem('math_player_name') || '';
+
+        // Racing game specific variables
+        let raceScore = 0;
+        const obstaclesIcons = ['🚧', '🪨', '📦', '⚠️', '🪵'];
 
         // Mascot Dialogues
-        const mascotDialogues = {
-            welcome: ["Chào bé yêu! Cùng gấu Barnaby học toán thật là vui nào! 🎈", "Hôm nay bé muốn thử sức với bài toán nào nè? ✨"],
-            correct: ["Chính xác rồi! Bé giỏi quá đi thôi! 🎉", "Xuất sắc luôn! Bé của gấu siêu thông minh! ⭐", "Đúng rồi nè! Thêm 1 ngôi sao lấp lánh cho bé! 🌟"],
-            wrong: ["Cố lên bé ơi, thử tính lại một xíu nhé! 💪", "Gần đúng rồi nè, bé xem lại kĩ nha! ❤️", "Không sao đâu, thử lại lần nữa nào bé yêu! 🐻"],
-            mascotClick: ["Hi hi, nhột gấu quá! Bé tập trung học nhé! 🐻", "Gấu Barnaby luôn cổ vũ bé đó! Cố lên!", "Bé có biết gấu rất thích sao lấp lánh không? ⭐"]
-        };
+        function getMascotDialogues() {
+            const name = playerName || "bé";
+            return {
+                welcome: [`Chào ${name} yêu! Cùng gấu Barnaby học toán nhé! 🏎️`, `Hôm nay ${name} muốn thử sức với bài toán nào nè? ✨`],
+                correct: [`Chính xác rồi! ${name} giỏi quá đi thôi! 🎉`, `Xuất sắc luôn! ${name} của gấu siêu thông minh! ⭐`, `Xe nổ bô vèo vèo! Thêm 1 ngôi sao cho ${name}! 🌟`],
+                wrong: [`Cố lên ${name} ơi, thử tính lại một xíu nhé! 💪`, `Gần đúng rồi nè, ${name} xem lại kĩ nha! ❤️`, `Cố lên ${name} yêu! 🐻`],
+                mascotClick: [`Hi hi, nhột gấu quá! ${name} tập trung làm toán nhé! 🐻`, `Gấu Barnaby luôn cổ vũ ${name} đó! Cố lên!`]
+            };
+        }
 
-        const emojiItems = [
-            { icon: '🍎', name: 'quả táo' },
-            { icon: '🐥', name: 'chú gà con' },
-            { icon: '⭐', name: 'ngôi sao' },
-            { icon: '🎈', name: 'bóng bay' },
-            { icon: '🐱', name: 'mèo con' },
-            { icon: '🥕', name: 'củ cà rốt' },
-            { icon: '🚗', name: 'xe ô ti' },
-            { icon: '🍓', name: 'quả dâu' },
-            { icon: '🦋', name: 'chú bướm' },
-            { icon: '🍦', name: 'que kem' }
-        ];
-
-        const badgesList = [
-            { id: 'b1', name: 'Mầm Non Toán Học', starsReq: 5, icon: '🌱' },
-            { id: 'b2', name: 'Thần Đồng Đếm Số', starsReq: 15, icon: '🔢' },
-            { id: 'b3', name: 'Chuyên Gia Phép Cộng', starsReq: 30, icon: '➕' },
-            { id: 'b4', name: 'Vua So Sánh', starsReq: 50, icon: '👑' },
-            { id: 'b5', name: 'Siêu Sao Lớp 1', starsReq: 100, icon: '🏆' }
-        ];
-
-        /* ---------------- Sound Effects (Web Audio API) ---------------- */
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function playSound(type) {
-            if (!soundEnabled) return;
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
-            try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                const now = audioCtx.currentTime;
-
-                if (type === 'correct') {
-                    // Upbeat arpeggio
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(523.25, now); // C5
-                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-                    osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
-
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-
-                    osc.start(now);
-                    osc.stop(now + 0.6);
-                } else if (type === 'wrong') {
-                    // Low wobble tone
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(220, now); // A3
-                    osc.frequency.linearRampToValueAtTime(150, now + 0.3);
-
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-
-                    osc.start(now);
-                    osc.stop(now + 0.4);
-                } else if (type === 'click') {
-                    // Pop click sound
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(400, now);
-                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
-
-                    gain.gain.setValueAtTime(0.15, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-
-                    osc.start(now);
-                    osc.stop(now + 0.08);
-                } else if (type === 'star') {
-                    // High sparkling chime
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(987.77, now); // B5
-                    osc.frequency.setValueAtTime(1318.51, now + 0.15); // E6
-
-                    gain.gain.setValueAtTime(0.25, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-
-                    osc.start(now);
-                    osc.stop(now + 0.5);
-                }
-            } catch (e) {
-                console.log("Audio play error", e);
+        /* ---------------- Display & UI Helper Functions ---------------- */
+        function updateStarDisplay() {
+            const starElem = document.getElementById('star-count');
+            if (starElem) {
+                starElem.innerText = totalStars;
             }
         }
 
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            const btn = document.getElementById('sound-btn');
-            if (soundEnabled) {
-                btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-                btn.className = "w-10 h-10 rounded-2xl bg-blue-100 border-2 border-blue-300 flex items-center justify-center text-blue-600 text-lg hover:bg-blue-200 transition-colors";
-                playSound('click');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
-                btn.className = "w-10 h-10 rounded-2xl bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-gray-400 text-lg hover:bg-gray-200 transition-colors";
+        function renderBadges() {
+            // Placeholder function for rendering badges if badge container exists
+            const badgeContainer = document.getElementById('badge-container');
+            if (badgeContainer) {
+                badgeContainer.innerHTML = '';
+                const badges = [
+                    { icon: '⭐', minStars: 5, label: 'Ngôi Sao Tập Sự' },
+                    { icon: '🚀', minStars: 20, label: 'Tay Đua Siêu Cấp' },
+                    { icon: '👑', minStars: 50, label: 'Vua Toán Học' }
+                ];
+                badges.forEach(b => {
+                    const unlocked = totalStars >= b.minStars;
+                    const badgeEl = document.createElement('div');
+                    badgeEl.className = `flex items-center space-x-1 px-3 py-1 rounded-full border text-xs font-bold ${unlocked ? 'bg-yellow-100 border-yellow-400 text-yellow-800' : 'bg-gray-100 border-gray-300 text-gray-400 opacity-60'}`;
+                    badgeEl.innerHTML = `<span>${b.icon}</span><span>${b.label}</span>`;
+                    badgeContainer.appendChild(badgeEl);
+                });
             }
         }
 
@@ -416,464 +146,148 @@
             updateStarDisplay();
             renderBadges();
             setLimit(10);
+            
+            if (!playerName) {
+                openNameModal();
+            } else {
+                updatePlayerNameUI();
+            }
         };
 
-        function setLimit(limit) {
-            playSound('click');
-            currentLimit = limit;
-            [5, 10, 20].forEach(l => {
-                const btn = document.getElementById(`limit-btn-${l}`);
-                if (l === limit) {
-                    btn.className = "px-2.5 py-1 rounded-xl bg-purple-500 text-white transition-colors shadow-sm";
-                } else {
-                    btn.className = "px-2.5 py-1 rounded-xl text-purple-700 hover:bg-purple-200 transition-colors";
-                }
-            });
-
-            // Refresh current game if active
-            if (currentMode) {
-                generateQuestion();
+        function openNameModal() {
+            document.getElementById('name-modal').classList.remove('hidden');
+            if (playerName) {
+                document.getElementById('player-name-input').value = playerName;
             }
         }
 
-        function updateStarDisplay() {
-            document.getElementById('star-count').innerText = totalStars;
-            localStorage.setItem('math_stars', totalStars.toString());
-            renderBadges();
+        function savePlayerName() {
+            playSound('click');
+            const input = document.getElementById('player-name-input').value.trim();
+            if (input) {
+                playerName = input;
+                localStorage.setItem('math_player_name', playerName);
+                updatePlayerNameUI();
+                document.getElementById('name-modal').classList.add('hidden');
+                speakMascot(`Chào ${playerName}! Cùng gấu Barnaby bắt đầu học toán nhé! ⭐`);
+            }
         }
 
-        function speakMascot(text) {
-            document.getElementById('mascot-speech').innerText = text;
+        function updatePlayerNameUI() {
+            const displayStr = playerName ? `Bé: ${playerName}` : 'Bé Học Toán';
+            document.getElementById('player-greeting-header').innerText = displayStr;
         }
 
         function getRandomMascotText(type) {
-            const list = mascotDialogues[type];
+            const dialogues = getMascotDialogues();
+            const list = dialogues[type];
             return list[Math.floor(Math.random() * list.length)];
         }
 
-        function playMascotSound() {
-            playSound('click');
-            speakMascot(getRandomMascotText('mascotClick'));
-            const avatar = document.getElementById('mascot-avatar');
-            avatar.classList.add('animate-bounce');
-            setTimeout(() => avatar.classList.remove('animate-bounce'), 1000);
+        /* ---------------- PROGRESSIVE DIFFICULTY HELPER (2 TO 5 NUMBERS) ---------------- */
+        function generateMathProblem() {
+            // Determine number of elements in calculation based on streak
+            let numTerms = 2;
+            let levelLabel = "Mức 1 (2 số)";
+
+            if (streak >= 12) {
+                numTerms = 5;
+                levelLabel = "Mức 4 (Cực khó: 5 số! 🔥)";
+            } else if (streak >= 8) {
+                numTerms = 4;
+                levelLabel = "Mức 3 (Thử thách: 4 số! 🌟)";
+            } else if (streak >= 4) {
+                numTerms = 3;
+                levelLabel = "Mức 2 (Nâng cao: 3 số ⭐)";
+            }
+
+            let terms = [];
+            let ops = [];
+            let currentVal = Math.floor(Math.random() * (currentLimit - 1)) + 1;
+            terms.push(currentVal);
+
+            for (let i = 1; i < numTerms; i++) {
+                let isPlus = Math.random() > 0.45;
+                let nextTerm = 1;
+
+                if (isPlus) {
+                    let maxAdd = currentLimit - currentVal;
+                    if (maxAdd <= 1) {
+                        isPlus = false;
+                    } else {
+                        nextTerm = Math.floor(Math.random() * Math.min(maxAdd, 6)) + 1;
+                        currentVal += nextTerm;
+                        ops.push('+');
+                    }
+                }
+
+                if (!isPlus) {
+                    if (currentVal <= 1) {
+                        nextTerm = Math.floor(Math.random() * (currentLimit - currentVal)) + 1;
+                        currentVal += nextTerm;
+                        ops.push('+');
+                    } else {
+                        nextTerm = Math.floor(Math.random() * (currentVal - 1)) + 1;
+                        currentVal -= nextTerm;
+                        ops.push('-');
+                    }
+                }
+                terms.push(nextTerm);
+            }
+
+            // Build expression text string
+            let expr = `${terms[0]}`;
+            for (let i = 0; i < ops.length; i++) {
+                expr += ` ${ops[i]} ${terms[i+1]}`;
+            }
+
+            return { expressionText: expr, answer: currentVal, levelLabel: levelLabel, numTerms: numTerms };
         }
 
-        function renderBadges() {
-            const container = document.getElementById('badges-container');
-            container.innerHTML = '';
-
-            badgesList.forEach(b => {
-                const unlocked = totalStars >= b.starsReq;
-                const badgeEl = document.createElement('div');
-                badgeEl.className = `flex items-center space-x-2 px-3 py-2 rounded-2xl border-2 ${
-                    unlocked 
-                    ? 'bg-yellow-50 border-yellow-300 text-yellow-800 shadow-sm' 
-                    : 'bg-gray-50 border-gray-200 text-gray-400 opacity-60'
-                }`;
-                badgeEl.innerHTML = `
-                    <span class="text-2xl">${unlocked ? b.icon : '🔒'}</span>
-                    <div class="text-left">
-                        <div class="text-xs font-bold">${b.name}</div>
-                        <div class="text-[10px]">${unlocked ? 'Đã đạt được!' : `Cần ${b.starsReq} ⭐`}</div>
-                    </div>
-                `;
-                container.appendChild(badgeEl);
-            });
-        }
-
-        /* ---------------- Navigation Management ---------------- */
-        function showHome() {
-            playSound('click');
-            currentMode = null;
-            document.getElementById('mode-home').classList.remove('hidden');
-            document.getElementById('game-container').classList.add('hidden');
-            document.getElementById('game-container').classList.remove('flex');
-            speakMascot(getRandomMascotText('welcome'));
-        }
-
-        function startMode(mode) {
-            playSound('click');
-            currentMode = mode;
-            document.getElementById('mode-home').classList.add('hidden');
-            document.getElementById('game-container').classList.remove('hidden');
-            document.getElementById('game-container').classList.add('flex');
-            generateQuestion();
-        }
-
-        /* ---------------- Question Generator Router ---------------- */
-        function generateQuestion() {
+        /* ---------------- MODE 2: ADDITION & SUBTRACTION (PURE NUMBERS, NO VISUALS) ---------------- */
+        function setupMathMode() {
             const display = document.getElementById('display-area');
             const options = document.getElementById('options-area');
             const titleTag = document.getElementById('game-title-tag');
             const prompt = document.getElementById('question-prompt');
+            display.innerHTML = ''; options.innerHTML = '';
 
-            display.innerHTML = '';
-            options.innerHTML = '';
+            titleTag.innerText = "Chế độ 2: Phép Cộng & Trừ";
+            titleTag.className = "bg-blue-200 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
+            prompt.innerText = "Bé hãy tính kết quả phép tính bên dưới nhé!";
 
-            document.getElementById('streak-badge').innerText = `🔥 Chuỗi đúng: ${streak}`;
+            // Progressive math problem (2 to 5 numbers)
+            const problem = generateMathProblem();
+            currentAnswer = problem.answer;
 
-            if (currentMode === 'count') {
-                titleTag.innerText = "Chế độ 1: Tập Đếm";
-                titleTag.className = "bg-pink-200 text-pink-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
-                setupCountMode(display, options, prompt);
-            } else if (currentMode === 'math') {
-                titleTag.innerText = "Chế độ 2: Phép Cộng & Trừ";
-                titleTag.className = "bg-blue-200 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
-                setupMathMode(display, options, prompt);
-            } else if (currentMode === 'compare') {
-                titleTag.innerText = "Chế độ 3: So Sánh Số";
-                titleTag.className = "bg-yellow-200 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
-                setupCompareMode(display, options, prompt);
-            } else if (currentMode === 'match') {
-                titleTag.innerText = "Chế độ 4: Ghép Đôi";
-                titleTag.className = "bg-green-200 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide";
-                setupMatchMode(display, options, prompt);
-            }
-        }
+            // Update level tag on UI
+            const levelBadge = document.getElementById('level-badge');
+            if (levelBadge) levelBadge.innerText = problem.levelLabel;
 
-        /* ---------------- MODE 1: COUNT OBJECTS ---------------- */
-        function setupCountMode(display, options, prompt) {
-            const count = Math.floor(Math.random() * currentLimit) + 1;
-            currentAnswer = count;
-            const item = emojiItems[Math.floor(Math.random() * emojiItems.length)];
-
-            prompt.innerText = `Có bao nhiêu ${item.name} ở bên dưới nè?`;
-
-            // Display grid of icons
-            const grid = document.createElement('div');
-            grid.className = "flex flex-wrap justify-center gap-3 p-4 bg-pink-50 rounded-2xl border-2 border-pink-200 max-w-lg";
-
-            for (let i = 0; i < count; i++) {
-                const iconEl = document.createElement('span');
-                iconEl.className = "text-4xl md:text-5xl animate-wiggle inline-block hover:scale-125 transition-transform cursor-pointer";
-                iconEl.innerText = item.icon;
-                iconEl.onclick = () => playSound('click');
-                grid.appendChild(iconEl);
-            }
-            display.appendChild(grid);
-
-            // Generate 4 options
-            const choices = generateChoices(count, currentLimit);
-            choices.forEach(val => {
-                const btn = document.createElement('button');
-                btn.className = "btn-3d bg-pink-400 hover:bg-pink-500 text-white font-bold text-3xl py-4 rounded-2xl border-2 border-pink-600";
-                btn.innerText = val;
-                btn.onclick = () => checkAnswer(val);
-                options.appendChild(btn);
-            });
-        }
-
-        /* ---------------- MODE 2: ADDITION & SUBTRACTION ---------------- */
-        function setupMathMode(display, options, prompt) {
-            const isAddition = Math.random() > 0.4; // 60% Addition, 40% Subtraction
-            let num1, num2, ans;
-            const item = emojiItems[Math.floor(Math.random() * emojiItems.length)];
-
-            if (isAddition) {
-                ans = Math.floor(Math.random() * (currentLimit - 1)) + 2; // min 2
-                num1 = Math.floor(Math.random() * (ans - 1)) + 1;
-                num2 = ans - num1;
-                prompt.innerText = `Thực hiện phép cộng trực quan này nhé!`;
-            } else {
-                num1 = Math.floor(Math.random() * (currentLimit - 1)) + 2;
-                num2 = Math.floor(Math.random() * num1) + 1;
-                ans = num1 - num2;
-                prompt.innerText = `Thực hiện phép trừ trực quan này nhé!`;
-            }
-
-            currentAnswer = ans;
-
-            // Render visuals for math equation
+            // Display minimal pure number equation block (NO IMAGE HINTS)
             const container = document.createElement('div');
-            container.className = "flex flex-col md:flex-row items-center justify-center gap-4 bg-blue-50 p-4 md:p-6 rounded-3xl border-2 border-blue-200 w-full";
+            container.className = "flex flex-col items-center justify-center p-6 md:p-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl border-3 border-blue-300 w-full max-w-lg shadow-md";
 
-            // Group 1
-            const group1 = createVisualGroup(num1, item.icon);
-            // Operator
-            const opEl = document.createElement('div');
-            opEl.className = "text-4xl font-extrabold text-blue-600 px-2";
-            opEl.innerText = isAddition ? '➕' : '➖';
-            // Group 2
-            const group2 = createVisualGroup(num2, item.icon);
+            const levelText = document.createElement('span');
+            levelText.className = "text-xs font-bold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full mb-3";
+            levelText.innerText = `Phép tính ${problem.numTerms} số`;
 
-            // Equation text banner
             const eqText = document.createElement('div');
-            eqText.className = "text-2xl md:text-3xl font-bold text-gray-700 bg-white px-6 py-2 rounded-2xl shadow-sm border border-blue-200 mt-2 md:mt-0";
-            eqText.innerText = `${num1} ${isAddition ? '+' : '-'} ${num2} = ?`;
+            eqText.className = "text-3xl md:text-5xl font-extrabold text-blue-800 tracking-wider text-center leading-relaxed";
+            eqText.innerText = `${problem.expressionText} = ?`;
 
-            container.appendChild(group1);
-            container.appendChild(opEl);
-            container.appendChild(group2);
-
+            container.appendChild(levelText);
+            container.appendChild(eqText);
             display.appendChild(container);
-            display.appendChild(eqText);
 
-            // Choices
-            const choices = generateChoices(ans, currentLimit);
+            // Large Touch Option Buttons optimized for Mobile
+            const choices = generateChoices(currentAnswer, currentLimit);
             choices.forEach(val => {
                 const btn = document.createElement('button');
-                btn.className = "btn-3d bg-blue-400 hover:bg-blue-500 text-white font-bold text-3xl py-4 rounded-2xl border-2 border-blue-600";
+                btn.className = "btn-3d bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-extrabold text-3xl md:text-4xl py-4 md:py-5 rounded-2xl border-2 border-blue-700 shadow-md";
                 btn.innerText = val;
                 btn.onclick = () => checkAnswer(val);
                 options.appendChild(btn);
             });
         }
-
-        function createVisualGroup(count, emoji) {
-            const box = document.createElement('div');
-            box.className = "flex flex-wrap justify-center gap-1.5 p-2 bg-white rounded-2xl border border-blue-200 min-w-[70px] max-w-[140px]";
-            for (let i = 0; i < count; i++) {
-                const span = document.createElement('span');
-                span.className = "text-2xl md:text-3xl";
-                span.innerText = emoji;
-                box.appendChild(span);
-            }
-            return box;
-        }
-
-        /* ---------------- MODE 3: GREATER / LESS / EQUAL ---------------- */
-        function setupCompareMode(display, options, prompt) {
-            prompt.innerText = "Điền dấu thích hợp ( >, <, = ) vào chỗ trống nè!";
-
-            const num1 = Math.floor(Math.random() * currentLimit) + 1;
-            // 30% chance for equal, 70% different
-            let num2;
-            if (Math.random() < 0.3) {
-                num2 = num1;
-            } else {
-                num2 = Math.floor(Math.random() * currentLimit) + 1;
-            }
-
-            if (num1 > num2) currentAnswer = '>';
-            else if (num1 < num2) currentAnswer = '<';
-            else currentAnswer = '=';
-
-            const item = emojiItems[Math.floor(Math.random() * emojiItems.length)];
-
-            // Comparison Layout
-            const mainBox = document.createElement('div');
-            mainBox.className = "flex items-center justify-center space-x-4 md:space-x-8 bg-yellow-50 p-6 rounded-3xl border-2 border-yellow-200 w-full max-w-lg";
-
-            // Left side
-            const leftSide = document.createElement('div');
-            leftSide.className = "flex flex-col items-center";
-            leftSide.innerHTML = `
-                <div class="text-4xl md:text-5xl font-bold text-yellow-700 mb-2">${num1}</div>
-                <div class="flex flex-wrap justify-center gap-1 max-w-[110px] bg-white p-2 rounded-xl border border-yellow-200">${item.icon.repeat(num1)}</div>
-            `;
-
-            // Placeholder Question Box
-            const qBox = document.createElement('div');
-            qBox.className = "w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl border-4 border-dashed border-yellow-400 flex items-center justify-center text-3xl md:text-4xl font-extrabold text-yellow-600 shadow-inner";
-            qBox.innerText = "?";
-
-            // Right side
-            const rightSide = document.createElement('div');
-            rightSide.className = "flex flex-col items-center";
-            rightSide.innerHTML = `
-                <div class="text-4xl md:text-5xl font-bold text-yellow-700 mb-2">${num2}</div>
-                <div class="flex flex-wrap justify-center gap-1 max-w-[110px] bg-white p-2 rounded-xl border border-yellow-200">${item.icon.repeat(num2)}</div>
-            `;
-
-            mainBox.appendChild(leftSide);
-            mainBox.appendChild(qBox);
-            mainBox.appendChild(rightSide);
-
-            display.appendChild(mainBox);
-
-            // Option Buttons: >, <, =
-            options.className = "w-full flex justify-center space-x-6 mt-4";
-            ['>', '=', '<'].forEach(op => {
-                const btn = document.createElement('button');
-                btn.className = "btn-3d w-24 bg-yellow-400 hover:bg-yellow-500 text-white font-extrabold text-4xl py-3 rounded-2xl border-2 border-yellow-600";
-                btn.innerText = op;
-                btn.onclick = () => checkAnswer(op);
-                options.appendChild(btn);
-            });
-        }
-
-        /* ---------------- MODE 4: MATCHING GAME ---------------- */
-        let selectedMatch = null;
-        let matchedPairsCount = 0;
-
-        function setupMatchMode(display, options, prompt) {
-            prompt.innerText = "Bé hãy nối số với hình lượng tương ứng nhé!";
-            options.innerHTML = ''; // Not using options bottom grid for matching mode
-
-            const pairCount = 3; // 3 pairs per game
-            matchedPairsCount = 0;
-            const numbers = [];
-            
-            // Pick unique numbers
-            while(numbers.length < pairCount) {
-                let r = Math.floor(Math.random() * currentLimit) + 1;
-                if(!numbers.includes(r)) numbers.push(r);
-            }
-
-            const item = emojiItems[Math.floor(Math.random() * emojiItems.length)];
-
-            // Prepare columns data
-            const leftItems = numbers.map(n => ({ id: n, type: 'num', value: n }));
-            const rightItems = shuffle([...numbers]).map(n => ({ id: n, type: 'visual', value: n }));
-
-            const matchGrid = document.createElement('div');
-            matchGrid.className = "grid grid-cols-2 gap-6 md:gap-12 w-full max-w-md my-2";
-
-            // Left Column (Numbers)
-            const leftCol = document.createElement('div');
-            leftCol.className = "flex flex-col space-y-4";
-            leftItems.forEach(itemObj => {
-                const card = document.createElement('div');
-                card.className = "match-card bg-green-50 border-3 border-green-300 rounded-2xl p-4 flex items-center justify-center cursor-pointer shadow-sm text-3xl font-bold text-green-700";
-                card.innerText = itemObj.value;
-                card.dataset.id = itemObj.id;
-                card.dataset.type = 'num';
-                card.onclick = (e) => handleMatchClick(card, itemObj);
-                leftCol.appendChild(card);
-            });
-
-            // Right Column (Visual Icons)
-            const rightCol = document.createElement('div');
-            rightCol.className = "flex flex-col space-y-4";
-            rightItems.forEach(itemObj => {
-                const card = document.createElement('div');
-                card.className = "match-card bg-green-50 border-3 border-green-300 rounded-2xl p-3 flex flex-wrap items-center justify-center gap-1 cursor-pointer shadow-sm min-h-[70px]";
-                card.innerHTML = item.icon.repeat(itemObj.value);
-                card.dataset.id = itemObj.id;
-                card.dataset.type = 'visual';
-                card.onclick = (e) => handleMatchClick(card, itemObj);
-                rightCol.appendChild(card);
-            });
-
-            matchGrid.appendChild(leftCol);
-            matchGrid.appendChild(rightCol);
-            display.appendChild(matchGrid);
-        }
-
-        function handleMatchClick(cardEl, data) {
-            playSound('click');
-
-            if (cardEl.classList.contains('matched')) return;
-
-            // If none selected yet
-            if (!selectedMatch) {
-                selectedMatch = { element: cardEl, data: data };
-                cardEl.classList.add('selected');
-                return;
-            }
-
-            // If click same element -> deselect
-            if (selectedMatch.element === cardEl) {
-                cardEl.classList.remove('selected');
-                selectedMatch = null;
-                return;
-            }
-
-            // If clicked same side -> switch selection
-            if (selectedMatch.data.type === data.type) {
-                selectedMatch.element.classList.remove('selected');
-                selectedMatch = { element: cardEl, data: data };
-                cardEl.classList.add('selected');
-                return;
-            }
-
-            // Check if pair matches
-            if (selectedMatch.data.id === data.id) {
-                // Correct Match
-                playSound('correct');
-                selectedMatch.element.classList.remove('selected');
-                selectedMatch.element.classList.add('matched');
-                cardEl.classList.add('matched');
-                selectedMatch = null;
-                matchedPairsCount++;
-
-                speakMascot("Ghép chuẩn quá bé ơi! 🎉");
-
-                // If all matched!
-                if (matchedPairsCount === 3) {
-                    setTimeout(() => {
-                        triggerConfetti();
-                        playSound('star');
-                        totalStars += 2; // Bonus 2 stars for matching puzzle
-                        streak++;
-                        updateStarDisplay();
-                        speakMascot("Bé hoàn thành xuất sắc trò ghép cặp! ⭐+2");
-                        setTimeout(() => generateQuestion(), 1600);
-                    }, 500);
-                }
-            } else {
-                // Wrong Match
-                playSound('wrong');
-                cardEl.classList.add('bg-red-100', 'border-red-400');
-                selectedMatch.element.classList.add('bg-red-100', 'border-red-400');
-                
-                speakMascot("Chưa đúng cặp rồi, bé chọn lại nha! ❤️");
-
-                setTimeout(() => {
-                    cardEl.classList.remove('bg-red-100', 'border-red-400');
-                    if (selectedMatch) {
-                        selectedMatch.element.classList.remove('bg-red-100', 'border-red-400', 'selected');
-                        selectedMatch = null;
-                    }
-                }, 800);
-            }
-        }
-
-        /* ---------------- Answer Evaluation Engine ---------------- */
-        function checkAnswer(userAns) {
-            if (userAns === currentAnswer) {
-                // CORRECT ANSWER
-                playSound('correct');
-                triggerConfetti();
-                totalStars += 1;
-                streak += 1;
-                updateStarDisplay();
-                speakMascot(getRandomMascotText('correct'));
-
-                setTimeout(() => {
-                    generateQuestion();
-                }, 1400);
-
-            } else {
-                // WRONG ANSWER
-                playSound('wrong');
-                streak = 0;
-                document.getElementById('streak-badge').innerText = `🔥 Chuỗi đúng: ${streak}`;
-                speakMascot(getRandomMascotText('wrong'));
-            }
-        }
-
-        /* ---------------- Utility Functions ---------------- */
-        function generateChoices(correctVal, maxLimit) {
-            const set = new Set([correctVal]);
-            while (set.size < 4) {
-                let offset = (Math.floor(Math.random() * 5) + 1) * (Math.random() > 0.5 ? 1 : -1);
-                let fake = correctVal + offset;
-                if (fake >= 0 && fake <= maxLimit + 5) {
-                    set.add(fake);
-                }
-            }
-            return shuffle(Array.from(set));
-        }
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function triggerConfetti() {
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 50,
-                    spread: 60,
-                    origin: { y: 0.7 }
-                });
-            }
-        }
-    </script>
-</body>
-</html>
+<!-- ... existing code ... -->
